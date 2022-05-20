@@ -1,7 +1,9 @@
 const SAVE_CURRENCIES = 'SAVE_CURRENCIES';
+const SAVE_EXPENSE = 'SAVE_EXPENSE';
 const saveCurrencies = (currencies) => ({ type: SAVE_CURRENCIES, currencies });
+export const saveExpense = (expense) => ({ type: SAVE_EXPENSE, expense });
 
-function fetchCurrencies() {
+export function fetchCurrencies() {
   return async (dispatch) => {
     const apiCurrencies = await fetch('https://economia.awesomeapi.com.br/json/all');
     const resultCurrencies = await apiCurrencies.json();
@@ -10,5 +12,3 @@ function fetchCurrencies() {
     dispatch(saveCurrencies(currencies));
   };
 }
-
-export default fetchCurrencies;
