@@ -4,6 +4,16 @@ const INITIAL_STATE = {
   expenses: [],
 };
 
-const wallet = (state = INITIAL_STATE) => state;
+const wallet = (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+  case 'SAVE_CURRENCIES':
+    return {
+      ...state,
+      currencies: action.currencies,
+    };
+  default:
+    return state;
+  }
+};
 
 export default wallet;
