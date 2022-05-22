@@ -13,9 +13,10 @@ class Wallet extends React.Component {
     this.state = {
       value: 0,
       description: '',
-      typeCurrenty: 'USD',
+      currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
+      totalExpenses: 0,
     };
   }
 
@@ -33,7 +34,7 @@ class Wallet extends React.Component {
 
   async clickBtnForm() {
     // pegar state
-    const { value, description, typeCurrenty, method, tag } = this.state;
+    const { value, description, currency, method, tag, totalExpenses } = this.state;
     const { dispatch, expenses } = this.props;
     // pegar resultado API
     const response = await fetch('https://economia.awesomeapi.com.br/json/all');
@@ -44,28 +45,31 @@ class Wallet extends React.Component {
       id: expenses.length,
       value,
       description,
-      typeCurrenty,
+      currency,
       method,
       tag,
       exchangeRates: dados,
     };
+    const convertExpense = Number((value * dados[`${currency}`].ask));
+    const sumExpense = (totalExpenses + convertExpense);
     dispatch(saveExpense(dataExpense));
     this.setState({
       value: 0,
       description: '',
-      typeCurrenty: 'USD',
+      currency: 'USD',
       method: 'Dinheiro',
+      totalExpenses: sumExpense,
     });
   }
 
   render() {
     const { userState, currencies } = this.props;
-    const { value, description, typeCurrenty, method, tag } = this.state;
+    const { value, description, currency, method, tag, totalExpenses } = this.state;
     return (
       <section>
         <header>
           <p data-testid="email-field">{userState.email}</p>
-          <p data-testid="total-field">0</p>
+          <p data-testid="total-field">{ totalExpenses.toFixed(2) }</p>
           <p data-testid="header-currency-field">BRL</p>
         </header>
         <form>
@@ -88,12 +92,12 @@ class Wallet extends React.Component {
               Moeda
               <select
                 id="Moeda"
-                name="typeCurrenty"
-                value={ typeCurrenty }
+                name="currency"
+                value={ currency }
                 onChange={ this.handleChange }
               >
-                {currencies.map((currency) => (
-                  (<option key={ currency }>{currency}</option>)
+                {currencies.map((typeCurrency) => (
+                  (<option key={ typeCurrency }>{typeCurrency}</option>)
                 ))}
               </select>
             </label>
