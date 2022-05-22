@@ -63,7 +63,7 @@ class Wallet extends React.Component {
   }
 
   render() {
-    const { userState, currencies } = this.props;
+    const { userState, currencies, expenses } = this.props;
     const { value, description, currency, method, tag, totalExpenses } = this.state;
     return (
       <section>
@@ -163,6 +163,25 @@ class Wallet extends React.Component {
               </th>
             </tr>
           </thead>
+          <tbody>
+            { expenses.map((expense) => (
+              <tr key={ expense.id }>
+                <td>{ expense.description}</td>
+                <td>{ expense.tag }</td>
+                <td>{ expense.method }</td>
+                <td>{ Number(expense.value).toFixed(2) }</td>
+                <td>{ expense.exchangeRates[expense.currency].name }</td>
+                <td>
+                  { Number(expense.exchangeRates[expense.currency].ask).toFixed(2) }
+                </td>
+                <td>
+                  {(expense.value * Number(expense.exchangeRates[expense.currency].ask))
+                    .toFixed(2) }
+                </td>
+                <td>Real</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </section>);
   }
