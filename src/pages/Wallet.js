@@ -1,5 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import '../css/Wallet.css';
 import { connect } from 'react-redux';
 import { fetchCurrencies, saveExpense } from '../actions/Currencies';
 
@@ -67,41 +68,63 @@ class Wallet extends React.Component {
     const { value, description, currency, method, tag, totalExpenses } = this.state;
     return (
       <section>
-        <header>
-          <p data-testid="email-field">{userState.email}</p>
-          <p data-testid="total-field">{ totalExpenses.toFixed(2) }</p>
-          <p data-testid="header-currency-field">BRL</p>
+        <header className="headerWallet">
+          <h1>Trybe Wallet</h1>
+          <div className="emailWallet">
+            <p data-testid="email-field">
+              Email:
+              {userState.email}
+            </p>
+            <p
+              data-testid="total-field"
+              className="valueExpense"
+            >
+              Despesa Total:
+              { totalExpenses.toFixed(2) }
+            </p>
+            <p data-testid="header-currency-field">BRL</p>
+          </div>
         </header>
-        <form>
-          <fieldset>
+        <form className="formExpense">
+          <label htmlFor="inputValue">
+            Value
             <input
+              id="inputValue"
               type="number"
               name="value"
               value={ value }
               onChange={ this.handleChange }
               data-testid="value-input"
             />
+          </label>
+          <label htmlFor="inputDescription">
+            Description
             <input
+              id="inputDescription"
               type="text"
               name="description"
               value={ description }
               onChange={ this.handleChange }
               data-testid="description-input"
             />
-            <label htmlFor="Moeda">
-              Moeda
-              <select
-                id="Moeda"
-                name="currency"
-                value={ currency }
-                onChange={ this.handleChange }
-              >
-                {currencies.map((typeCurrency) => (
-                  (<option key={ typeCurrency }>{typeCurrency}</option>)
-                ))}
-              </select>
-            </label>
+          </label>
+          <label htmlFor="Moeda">
+            Moeda
             <select
+              id="Moeda"
+              name="currency"
+              value={ currency }
+              onChange={ this.handleChange }
+            >
+              {currencies.map((typeCurrency) => (
+                (<option key={ typeCurrency }>{typeCurrency}</option>)
+              ))}
+            </select>
+          </label>
+          <label htmlFor="Method">
+            Method
+            <select
+              id="Method"
               name="method"
               value={ method }
               onChange={ this.handleChange }
@@ -111,7 +134,11 @@ class Wallet extends React.Component {
               <option>Cartão de crédito</option>
               <option>Cartão de débito</option>
             </select>
+          </label>
+          <label htmlFor="Tag">
+            Tag
             <select
+              id="Tag"
               name="tag"
               value={ tag }
               onChange={ this.handleChange }
@@ -123,13 +150,13 @@ class Wallet extends React.Component {
               <option>Transporte</option>
               <option>Saúde</option>
             </select>
-            <button
-              type="button"
-              onClick={ this.clickBtnForm }
-            >
-              Adicionar despesa
-            </button>
-          </fieldset>
+          </label>
+          <button
+            type="button"
+            onClick={ this.clickBtnForm }
+          >
+            Adicionar despesa
+          </button>
         </form>
         <table>
           <thead>
@@ -179,6 +206,10 @@ class Wallet extends React.Component {
                     .toFixed(2) }
                 </td>
                 <td>Real</td>
+                <td>
+                  <button type="button" className="btnEdit">Editar</button>
+                  <button type="button" className="btnDelete">Excluir</button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -199,7 +230,14 @@ Wallet.propTypes = {
   }).isRequired,
   dispatch: propTypes.func.isRequired,
   currencies: propTypes.arrayOf(propTypes.string.isRequired).isRequired,
-  expenses: propTypes.arrayOf(propTypes.string.isRequired).isRequired,
+  expenses: propTypes.arrayOf(propTypes.shape({
+    id: propTypes.number.isRequired,
+    value: propTypes.string.isRequired,
+    description: propTypes.string.isRequired,
+    currency: propTypes.string.isRequired,
+    method: propTypes.string.isRequired,
+    exchangeRates: propTypes.objectOf(propTypes.string.isRequired).isRequired,
+  }).isRequired).isRequired,
 };
 
 export default connect(mapStateToProps)(Wallet);

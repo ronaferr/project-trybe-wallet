@@ -1,5 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import '../css/Login.css';
 import { connect } from 'react-redux';
 import getEmail from '../actions/EmailAction';
 
@@ -43,25 +44,33 @@ class Login extends React.Component {
   render() {
     const { email, password, disabled } = this.state;
     return (
-      <section>
-        <form>
-          <fieldset>
+      <section className="pageLogin">
+        <form className="formLogin">
+          <fieldset className="borderFormLogin">
+            <h1>Trybe Wallet</h1>
             <input
               type="text"
+              className="inputEmail"
               data-testid="email-input"
               name="email"
+              placeholder="Email"
               value={ email }
               onChange={ this.handleChange }
             />
+            <br />
             <input
               type="password"
+              className="inputSenha"
               data-testid="password-input"
               name="password"
+              placeholder="Password"
               value={ password }
               onChange={ this.handleChange }
             />
+            <br />
             <button
               type="button"
+              className="buttonLogin"
               disabled={ disabled }
               onClick={ () => { this.clickButton(email); } }
             >
