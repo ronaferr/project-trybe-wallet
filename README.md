@@ -7,6 +7,6 @@ Este projeto trata-se de uma aplicação que cadastra despesas e converte valor 
 
 ##  Tecnologias usadas
 
-> Desenvolvido usando: React, JS6 e CSS3
+> Desenvolvido usando: React, Redux, JS6 e CSS3
 
-[Página da aplicação]()
+[Página da aplicação](https://project-trybe-wallet-snowy.vercel.app/)
